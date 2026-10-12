@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>預約系統試玩</title>
+<style>
+/* 版面：手機優先，單欄；桌機時置中成一支手機的寬度。配色沿用產品的馬卡龍藍，單一亮色主題。 */
+:root{
+  --bg:#eef5fd; --bg2:#f8fbff; --card:#ffffff; --ink:#2b3a4f; --muted:#5f7088;
+  --accent:#8cc4fb; --accent-text:#17365f; --accent-ink:#2569b5; --line:#d9e6f7;
+  --sun:#f6b756; --warn-bg:#fff3d6; --warn-ink:#6b5420; --ok-bg:#e3f6ea; --ok-ink:#1f6b3a; --no-bg:#fde8ee; --no-ink:#8a2a47;
+  --bubble:#ffffff; --mine:#cfe6fd;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:linear-gradient(var(--bg),var(--bg2)) fixed;color:var(--ink);font:16px/1.55 -apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent-ink);outline-offset:2px}
+.app{max-width:430px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;padding-inline:16px;padding-block:14px 18px}
+.top{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.tag{font-size:13px;color:var(--muted);text-align:center}
+.switch{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;background:#e1ecfa;border-radius:16px;padding:5px}
+.switch button{border:0;background:transparent;border-radius:12px;padding:10px 4px;font-size:15px;font-weight:700;color:var(--muted)}
+.switch button[aria-pressed="true"]{background:var(--card);color:var(--accent-ink);box-shadow:0 1px 6px rgba(60,110,180,.15)}
+.dot[hidden]{display:none}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--sun);margin-left:6px;vertical-align:middle}
+.phone{flex:1;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 6px 24px rgba(60,110,180,.12);min-height:560px}
+.bar{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#f2f7fd;border-bottom:1px solid var(--line);font-weight:700}
+.bar .back{border:0;background:none;color:var(--accent-ink);font-weight:700;padding:4px 6px 4px 0}
+.body{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--bg2)}
+.bubble{max-width:88%;background:var(--bubble);border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:10px 14px}
+.bubble.me{align-self:flex-end;background:var(--mine);border-color:#b7d6f6;border-radius:16px 16px 4px 16px}
+.bubble small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.hint{align-self:center;background:var(--warn-bg);color:var(--warn-ink);border-radius:14px;padding:10px 14px;font-size:15px;text-align:center}
+.menu{display:grid;border-top:1px solid var(--line);background:var(--card)}
+.menu.c3{grid-template-columns:repeat(3,1fr)}
+.menu button{border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--card);padding:16px 4px;font-weight:700;color:var(--accent-ink)}
+.menu button:nth-child(3n){border-right:0}
+.menu button:active{background:#eaf3fe}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.list{display:flex;flex-direction:column;gap:10px}
+.svc{width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.svc:active{background:#eaf3fe}
+.svc b{font-size:17px}.svc span{color:var(--accent-ink);font-weight:700}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.cal .h{font-size:13px;color:var(--muted);padding:4px 0}
+.cal button,.cal i{aspect-ratio:1;border-radius:10px;border:0;font-weight:700;font-style:normal;display:grid;place-items:center}
+.cal button{background:var(--accent);color:var(--accent-text)}
+.cal i{color:#a8b6c9;font-weight:400}
+.mon{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:8px}
+.mon button{border:1px solid var(--line);background:var(--card);border-radius:10px;width:40px;height:40px;color:var(--accent-ink)}
+.mon button:disabled{opacity:.35}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.slot{min-height:56px;display:grid;place-items:center;align-content:center;border:1px solid var(--accent-ink);background:var(--card);color:var(--accent-ink);border-radius:12px;padding:10px 0;font-weight:700}
+.slot[disabled]{border:1px dashed #9fb4cf;background:#eef4fb;color:#7d8da3;text-decoration:line-through;cursor:default}
+.slot[disabled] small{display:block;text-decoration:none;font-size:11px;font-weight:400}
+label{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:15px}
+input{font:inherit;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--ink)}
+input:focus-visible{outline:3px solid var(--accent-ink);outline-offset:1px}
+.btn{border:0;border-radius:14px;padding:14px;background:var(--accent);color:var(--accent-text);font-weight:800;width:100%}
+.btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--accent-ink)}
+.btn.ok{background:#bfe8cc;color:var(--ok-ink)} .btn.no{background:#fbd3de;color:var(--no-ink)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700}
+.badge.wait{background:var(--warn-bg);color:var(--warn-ink)}.badge.ok{background:var(--ok-bg);color:var(--ok-ink)}.badge.no{background:var(--no-bg);color:var(--no-ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-weight:700;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+.anav{display:flex;gap:4px;overflow-x:auto;padding:0 8px;background:var(--card);border-bottom:2px solid var(--sun)}
+.anav button{border:0;background:none;padding:12px 10px;white-space:nowrap;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px}
+.anav button[aria-current="true"]{color:var(--accent-ink);border-bottom-color:var(--accent-ink)}
+.pills{display:flex;gap:8px}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 16px;font-weight:700;color:var(--muted)}
+.pill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+.warnbar{background:var(--warn-bg);color:var(--warn-ink);border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;gap:8px;font-weight:700;width:100%;border:0;text-align:left}
+.bk{display:flex;flex-direction:column;gap:2px}
+.bk .t{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:700}
+.sm{font-size:14px;color:var(--muted)}
+.acal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
+.acal .h{font-size:12px;color:var(--muted)}
+.acal button,.acal i{min-height:48px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:15px;position:relative;line-height:1.2}
+.acal button.has{background:#e3effc}
+.acal button.sel{outline:3px solid var(--accent-ink)}
+.acal button.today{border:2px solid var(--sun)}
+.acal small{font-size:11px;font-weight:400;color:var(--muted)}
+.acal .d{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--sun)}
+.acal i{border:0;background:none;min-height:0}
+.hrow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+.hrow:last-child{border:0}
+.sw{width:44px;height:26px;border-radius:999px;background:var(--accent);position:relative;border:0}
+.sw::after{content:"";position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff}
+.big{font-size:40px;line-height:1}
+.center{text-align:center}
+.foot{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+.foot button{border:0;background:none;color:var(--accent-ink);text-decoration:underline;font-size:13px}
+@media (prefers-reduced-motion:no-preference){.body>*{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}}}
+</style></head><body>
+<div class="app">
+  <div class="top">
+    <div class="tag">試玩版，所有資料都是假的，隨便點不會有任何影響</div>
+    <div class="switch" role="group" aria-label="切換角色">
+      <button id="tabC" aria-pressed="true">客人</button>
+      <button id="tabO" aria-pressed="false">老闆的 LINE<span id="dot" class="dot" hidden></span></button>
+      <button id="tabA" aria-pressed="false">網頁後台</button>
+    </div>
+  </div>
+  <div class="phone" id="phone"></div>
+  <div class="foot">想重來一次？<button id="reset">重新開始</button></div>
+</div>
+
+<script>
+(function(){
+  var SHOP='安心推拿館';
+  var SERVICES=[{id:1,name:'肩頸放鬆',min:30,price:500},{id:2,name:'全身推拿',min:60,price:1000},{id:3,name:'全身推拿（長時間）',min:90,price:1450},{id:4,name:'腳底按摩',min:40,price:600}];
+  var WD=['日','一','二','三','四','五','六'];
+  var PARTS=['肩頸','背部','腰部','腿部','腳底'];
+  var S; // 全部狀態都在記憶體，重新整理就重來
+
+  function fresh(){
+    var t=new Date(); t.setHours(0,0,0,0);
+    S={role:'c',c:{step:'chat',svc:null,parts:['肩頸'],date:null,month:new Date(t.getFullYear(),t.getMonth(),1),slot:null,name:'林先生',phone:'0912-345-678',msgs:[]},
+       o:{msgs:[],menuShown:false},booking:null,today:t,
+       a:{page:'ov',bk:'wait',month:new Date(t.getFullYear(),t.getMonth(),1),day:null},
+       fake:[
+         {name:'陳小姐',svc:SERVICES[0],date:addD(t,1),time:'10:00',status:'ok'},
+         {name:'黃先生',svc:SERVICES[1],date:addD(t,1),time:'14:00',status:'ok'},
+         {name:'周小姐',svc:SERVICES[2],date:addD(t,2),time:'11:00',status:'wait'},
+         {name:'吳先生',svc:SERVICES[3],date:addD(t,3),time:'19:00',status:'ok'},
+         {name:'許小姐',svc:SERVICES[1],date:addD(t,5),time:'15:00',status:'wait'}]};
+    S.c.msgs.push({t:'bot',x:'歡迎光臨'+SHOP+'！點下面的「預約」就能選時間。'});
+    S.o.msgs.push({t:'bot',x:'你好，這裡是你的老闆選單。有新預約我會在這裡通知你。'});
+  }
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function addD(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
+  function pad(n){return n<10?'0'+n:''+n}
+  function fmtDate(d){return (d.getMonth()+1)+' 月 '+d.getDate()+' 日（'+WD[d.getDay()]+'）'}
+  function sameDay(a,b){return a.getFullYear()==b.getFullYear()&&a.getMonth()==b.getMonth()&&a.getDate()==b.getDate()}
+  function openDay(d){return d.getDay()!==0 && d>S.today}
+  // 固定的「已被預約」時段（依日期算，每次看到都一樣）
+  function isBooked(d,h,m){var k=(d.getDate()*7+h*3+(m?5:0))%9;return k===0||k===4}
+  function slotsOf(d){var a=[];for(var h=10;h<20;h++){a.push([h,0]);a.push([h,30])}a.push([20,0]);return a}
+
+  function svcBtn(s){return '<button class="svc" data-svc="'+s.id+'"><b>'+s.name+'</b><span>'+s.min+' 分鐘 · NT$ '+s.price.toLocaleString('en-US')+'</span></button>'}
+  function bubble(m){return '<div class="bubble'+(m.t==='me'?' me':'')+'">'+m.x+'</div>'}
+
+  function customer(){
+    var c=S.c,h='',body='',menu='',bar='';
+    if(c.step==='chat'){
+      bar='<div class="bar">'+SHOP+'</div>';
+      body=c.msgs.map(bubble).join('');
+      if(!S.booking) body+='<div class="hint">先點下面的「預約」試試看</div>';
+      menu='<div class="menu c3"><button data-act="book">預約</button><button data-act="mine">我的預約</button><button data-act="contact">聯絡我們</button></div>';
+    }else{
+      var title={services:'選擇服務',cal:'選擇日期',slots:'選擇時間',form:'填寫資料',done:'預約完成',mine:'我的預約'}[c.step];
+      var back=(c.step==='done')?'':'<button class="back" data-act="back">‹ 返回</button>';
+      bar='<div class="bar">'+back+'<span>'+title+'</span></div>';
+      if(c.step==='services') body='<div class="list">'+SERVICES.map(svcBtn).join('')+'</div>';
+      if(c.step==='cal') body=calHtml();
+      if(c.step==='slots') body=slotsHtml();
+      if(c.step==='form') body=formHtml();
+      if(c.step==='done') body='<div class="card center"><div class="big">✓</div><h2 style="margin:8px 0 4px">已送出預約</h2><p style="margin:0;color:var(--muted)">老闆確認後會用 LINE 通知你。</p></div>'+summary()+'<button class="btn" data-act="home">回聊天室</button><button class="btn ghost" data-act="toOwner">看老闆這邊收到什麼 →</button>';
+      if(c.step==='mine') body=mineHtml();
+    }
+    return bar+'<div class="body">'+body+'</div>'+menu;
+  }
+  function summary(){var b=S.booking;if(!b)return '';
+    var st=b.status==='wait'?'<span class="badge wait">等老闆確認</span>':b.status==='ok'?'<span class="badge ok">已確認</span>':'<span class="badge no">未能接受</span>';
+    return '<div class="card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>'+esc(b.svc.name)+'</b>'+st+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'</div><div style="color:var(--accent-ink);font-weight:700">NT$ '+b.svc.price.toLocaleString('en-US')+'</div></div>'}
+  function mineHtml(){return S.booking?summary():'<div class="card center" style="color:var(--muted)">還沒有預約</div>'}
+  function calHtml(){
+    var c=c0(),m=c.month,first=new Date(m.getFullYear(),m.getMonth(),1),days=new Date(m.getFullYear(),m.getMonth()+1,0).getDate(),g='';
+    WD.forEach(function(w){g+='<div class="h">'+w+'</div>'});
+    for(var i=0;i<first.getDay();i++)g+='<i></i>';
+    for(var d=1;d<=days;d++){var dt=new Date(m.getFullYear(),m.getMonth(),d);g+=openDay(dt)?'<button data-day="'+d+'">'+d+'</button>':'<i>'+d+'</i>'}
+    var prevOff=(m.getFullYear()==S.today.getFullYear()&&m.getMonth()==S.today.getMonth()),nextOff=((m.getFullYear()*12+m.getMonth())-(S.today.getFullYear()*12+S.today.getMonth()))>=1;
+    return '<div class="card"><div class="mon"><button data-mon="-1" aria-label="上個月"'+(prevOff?' disabled':'')+'>‹</button><span>'+m.getFullYear()+' 年 '+(m.getMonth()+1)+' 月</span><button data-mon="1" aria-label="下個月"'+(nextOff?' disabled':'')+'>›</button></div><div class="cal">'+g+'</div><p class="center" style="color:var(--muted);font-size:14px;margin:10px 0 0">有顏色的日子可以預約</p></div>'}
+  function c0(){return S.c}
+  function slotsHtml(){
+    var c=S.c,d=c.date,g='';
+    slotsOf(d).forEach(function(s){var t=pad(s[0])+':'+pad(s[1]);
+      if(isBooked(d,s[0],s[1])) g+='<button class="slot" disabled>'+t+'<small>已預約</small></button>';
+      else g+='<button class="slot" data-slot="'+t+'">'+t+'</button>'});
+    return '<div class="card"><b>'+fmtDate(d)+'</b><p style="margin:2px 0 12px;color:var(--muted);font-size:14px">已被約走的時段會變灰，不會撞期。</p><div class="slots">'+g+'</div></div>'}
+  function formHtml(){
+    var c=S.c;
+    return '<div class="card"><b>'+esc(c.svc.name)+'</b><div style="color:var(--muted)">'+fmtDate(c.date)+' '+c.slot+'</div></div>'+
+      '<label for="nm">姓名<input id="nm" value="'+esc(c.name)+'" autocomplete="off"></label>'+
+      '<label for="ph">電話<input id="ph" inputmode="tel" value="'+esc(c.phone)+'" autocomplete="off"></label>'+
+      '<div class="card"><b style="font-size:15px">想加強的部位（選填）</b><div class="chips">'+PARTS.map(function(p){return '<button type="button" class="chip" data-part="'+p+'" aria-pressed="'+(c.parts.indexOf(p)>-1)+'">'+p+'</button>'}).join('')+'</div></div>'+
+      '<button class="btn" data-act="submit">送出預約</button>'}
+
+  function owner(){
+    var o=S.o,bar='<div class="bar">'+SHOP+'・老闆選單</div>',body=o.msgs.map(function(m){return m.html?m.html:bubble(m)}).join('');
+    if(!S.booking&&!o.msgs.some(function(m){return m.tag==='hint'}))body+='<div class="hint">還沒有新預約。先到「客人」約一筆，再回來看。<br><button class="btn ghost" style="margin-top:8px" data-act="toCust">去客人那邊</button></div>';
+    var menu='<div class="menu c3"><button data-m="today">今天</button><button data-m="closure">公休</button><button data-m="pending">待審核</button><button data-m="week">本週</button><button data-m="revenue">營收</button><button data-m="admin">後台</button></div>';
+    return bar+'<div class="body">'+body+'</div>'+menu;
+  }
+  function pendingCard(){
+    var b=S.booking;
+    return '<div class="card" data-card="1"><b>新預約</b><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'</div>'+(b.parts.length?'<div style="color:var(--muted)">想加強：'+b.parts.join('、')+'</div>':'')+'<div class="row" style="margin-top:10px"><button class="btn ok" data-dec="ok">接受</button><button class="btn no" data-dec="no">婉拒</button></div></div>'}
+
+  function render(){
+    document.getElementById('phone').innerHTML=S.role==='c'?customer():S.role==='o'?owner():adminView();
+    document.getElementById('tabC').setAttribute('aria-pressed',S.role==='c');
+    document.getElementById('tabO').setAttribute('aria-pressed',S.role==='o');
+    document.getElementById('tabA').setAttribute('aria-pressed',S.role==='a');
+    document.getElementById('dot').hidden=!(S.booking&&S.booking.status==='wait'&&S.role==='c');
+    var b=document.querySelector('.body');if(b&&S.role!=='a')b.scrollTop=b.scrollHeight;
+  }
+  function ownerSay(m){S.o.msgs.push(m)}
+
+  function allB(){var a=S.fake.slice();if(S.booking)a.push(S.booking);return a.sort(function(x,y){return x.date-y.date||(x.time<y.time?-1:1)})}
+  function stBadge(b){return b.status==='wait'?'<span class="badge wait">待審核</span>':b.status==='ok'?'<span class="badge ok">已確認</span>':'<span class="badge no">已婉拒</span>'}
+  function bkCard(b,act){var i=allB().indexOf(b);
+    return '<div class="card bk"><div class="t"><span>'+fmtDate(b.date)+' '+b.time+'</span>'+stBadge(b)+'</div><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div class="sm">NT$ '+b.svc.price.toLocaleString('en-US')+(b.parts&&b.parts.length?'・想加強：'+b.parts.join('、'):'')+'</div>'+
+      (act&&b.status==='wait'?'<div class="row" style="margin-top:8px"><button class="btn ok" data-adec="ok" data-i="'+i+'">接受</button><button class="btn no" data-adec="no" data-i="'+i+'">婉拒</button></div>':'')+'</div>'}
+  function decide(b,ok){
+    if(b.status!=='wait')return;
+    b.status=ok?'ok':'no';
+    if(b===S.booking){
+      S.o.msgs=S.o.msgs.filter(function(m){return !(m.html&&m.html.indexOf('data-card')>-1)});
+      ownerSay({html:'<div class="card"><b>'+(ok?'已接受':'已婉拒')+'</b><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'</div><p style="margin:8px 0 0;color:var(--muted);font-size:14px">客人的 LINE 會收到通知。</p></div>'});
+      S.c.msgs.push({t:'bot',x:ok?'你的預約已確認 ✓<small>'+esc(b.svc.name)+'・'+fmtDate(b.date)+' '+b.time+'</small>':'很抱歉，這個時段無法接受，歡迎改約其他時間。'});
+    }
+  }
+  function adminView(){
+    var A=S.a,pages=[['ov','總覽'],['bk','預約'],['svc','服務'],['hrs','營業時間']],all=allB(),wait=all.filter(function(b){return b.status==='wait'});
+    var nav='<div class="anav">'+pages.map(function(p){return '<button data-ap="'+p[0]+'"'+(A.page===p[0]?' aria-current="true"':'')+'>'+p[1]+(p[0]==='bk'&&wait.length?' <span class="badge no" style="background:#c0463f;color:#fff;padding:0 7px">'+wait.length+'</span>':'')+'</button>'}).join('')+'</div>';
+    var b='';
+    if(A.page==='ov'){
+      b='<h2 style="margin:0">總覽</h2>'+(wait.length?'<button class="warnbar" data-ap="bk">'+wait.length+' 筆預約等你審核<span>前往處理 ›</span></button>':'<div class="hint">目前沒有待審核的預約</div>')+
+        '<div class="sm" style="font-weight:700">接下來的預約</div>'+all.filter(function(x){return x.status==='ok'}).map(function(x){return bkCard(x)}).join('')||'<div class="card sm">還沒有已確認的預約</div>';
+    }else if(A.page==='bk'){
+      var pills='<div class="pills">'+[['wait','待審核'],['cal','日程'],['all','全部']].map(function(p){return '<button class="pill" data-ab="'+p[0]+'" aria-pressed="'+(A.bk===p[0])+'">'+p[1]+'</button>'}).join('')+'</div>';
+      var inner='';
+      if(A.bk==='wait')inner=wait.length?wait.map(function(x){return bkCard(x,true)}).join(''):'<div class="card center sm">都處理完了</div>';
+      if(A.bk==='all')inner=all.map(function(x){return bkCard(x,true)}).join('');
+      if(A.bk==='cal')inner=calAdmin(all);
+      b='<h2 style="margin:0">預約</h2>'+pills+inner;
+    }else if(A.page==='svc'){
+      b='<h2 style="margin:0">服務項目</h2>'+SERVICES.map(function(x){return '<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><b>'+x.name+'</b><div class="sm">'+x.min+' 分鐘・NT$ '+x.price.toLocaleString('en-US')+'</div></div><button class="pill">編輯</button></div>'}).join('')+'<div class="sm center">價格、時長、說明都能自己改，不要的項目可以停用。</div>';
+    }else{
+      var days=['週一','週二','週三','週四','週五','週六','週日'];
+      b='<h2 style="margin:0">營業時間</h2><div class="card">'+days.map(function(d,i){return '<div class="hrow"><b>'+d+'</b><span>'+(i<6?'10:00 ～ 21:00':'<span class="sm">公休</span>')+'</span></div>'}).join('')+'</div><div class="sm center">想臨時公休或連休幾天，在這裡一次設定。</div>';
+    }
+    return '<div class="bar">'+SHOP+'・後台</div>'+nav+'<div class="body">'+b+'</div>';
+  }
+  function calAdmin(all){
+    var A=S.a,m=A.month,first=new Date(m.getFullYear(),m.getMonth(),1),n=new Date(m.getFullYear(),m.getMonth()+1,0).getDate(),g='';
+    WD.forEach(function(w){g+='<div class="h">'+w+'</div>'});
+    for(var i=0;i<first.getDay();i++)g+='<i></i>';
+    for(var d=1;d<=n;d++){var dt=new Date(m.getFullYear(),m.getMonth(),d),list=all.filter(function(x){return sameDay(x.date,dt)}),hasW=list.some(function(x){return x.status==='wait'});
+      g+='<button data-aday="'+d+'" class="'+(list.length?'has ':'')+(sameDay(dt,S.today)?'today ':'')+(A.day&&sameDay(dt,A.day)?'sel':'')+'">'+d+(list.length?'<small>'+list.length+' 筆</small>':'')+(hasW?'<span class="d"></span>':'')+'</button>'}
+    var dayList=A.day?'<div class="sm" style="font-weight:700;margin-top:10px">'+fmtDate(A.day)+'</div>'+(all.filter(function(x){return sameDay(x.date,A.day)}).map(function(x){return bkCard(x,true)}).join('')||'<div class="card sm center">這天沒有預約</div>'):'<p class="sm center" style="margin:10px 0 0">橘點＝有待審核。點一天看詳細。</p>';
+    return '<div class="card"><div class="mon"><button data-amon="-1" aria-label="上個月">‹</button><span>'+m.getFullYear()+' 年 '+(m.getMonth()+1)+' 月</span><button data-amon="1" aria-label="下個月">›</button></div><div class="acal">'+g+'</div></div>'+dayList;
+  }
+
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button');if(!t)return;
+    var c=S.c;
+    if(t.id==='tabC'){S.role='c';return render()}
+    if(t.id==='tabO'){S.role='o';return render()}
+    if(t.id==='tabA'){S.role='a';return render()}
+    if(t.id==='reset'){fresh();return render()}
+    if(t.dataset.act==='toOwner'){S.role='o';return render()}
+    if(t.dataset.act==='toCust'){S.role='c';return render()}
+    if(S.role==='a'){
+      var A=S.a;
+      if(t.dataset.ap)A.page=t.dataset.ap;
+      else if(t.dataset.ab){A.bk=t.dataset.ab}
+      else if(t.dataset.adec){decide(allB()[+t.dataset.i],t.dataset.adec==='ok')}
+      else if(t.dataset.amon){A.month=new Date(A.month.getFullYear(),A.month.getMonth()+ +t.dataset.amon,1);A.day=null}
+      else if(t.dataset.aday){A.day=new Date(A.month.getFullYear(),A.month.getMonth(),+t.dataset.aday)}
+      return render();
+    }
+    if(S.role==='c'){
+      var a=t.dataset.act;
+      if(a==='book'){c.step='services'}
+      else if(a==='mine'){c.step='mine'}
+      else if(a==='contact'){c.msgs.push({t:'me',x:'聯絡我們'});c.msgs.push({t:'bot',x:SHOP+'<small>電話 02-1234-5678（示範用）</small>'})}
+      else if(a==='back'){c.step={services:'chat',cal:'services',slots:'cal',form:'slots',mine:'chat'}[c.step]||'chat'}
+      else if(a==='home'){c.step='chat'}
+      else if(t.dataset.part){var i=c.parts.indexOf(t.dataset.part);if(i>-1)c.parts.splice(i,1);else c.parts.push(t.dataset.part);return keepForm()}
+      else if(a==='submit'){
+        c.name=(document.getElementById('nm').value||'').trim()||'林先生';c.phone=document.getElementById('ph').value;
+        S.booking={svc:c.svc,date:c.date,time:c.slot,name:c.name,parts:c.parts.slice(),status:'wait'};
+        c.msgs.push({t:'me',x:'預約結果'});
+        c.msgs.push({t:'bot',x:'已收到你的預約：<b>'+esc(c.svc.name)+'</b><small>'+fmtDate(c.date)+' '+c.slot+'・等老闆確認</small>'});
+        ownerSay({t:'bot',x:'有一筆新預約，請看下面卡片。',tag:'new'});
+        ownerSay({html:pendingCard()});
+        c.step='done';
+      }
+      else if(t.dataset.svc){c.svc=SERVICES.filter(function(s){return s.id==t.dataset.svc})[0];c.step='cal'}
+      else if(t.dataset.mon){c.month=new Date(c.month.getFullYear(),c.month.getMonth()+ +t.dataset.mon,1)}
+      else if(t.dataset.day){c.date=new Date(c.month.getFullYear(),c.month.getMonth(),+t.dataset.day);c.step='slots'}
+      else if(t.dataset.slot){c.slot=t.dataset.slot;c.step='form'}
+      return render();
+    }
+    // 老闆
+    var o=S.o;
+    if(t.dataset.dec){decide(S.booking,t.dataset.dec==='ok');return render()}
+    var m=t.dataset.m;if(!m)return;
+    var names={today:'今天',closure:'公休',pending:'待審核',week:'本週',revenue:'營收',admin:'後台'};
+    ownerSay({t:'me',x:names[m]});
+    var b2=S.booking;
+    if(m==='pending'){ if(b2&&b2.status==='wait') ownerSay({html:pendingCard()}); else ownerSay({t:'bot',x:'目前沒有待審核的預約。'}) }
+    else if(m==='today'){ ownerSay({t:'bot',x:(b2&&b2.status==='ok'&&sameDay(b2.date,S.today))?'今天有 1 筆預約。':'今天沒有預約，好好休息一下。'}) }
+    else if(m==='week'){ ownerSay({t:'bot',x:b2&&b2.status==='ok'?'本週已確認 1 筆：'+esc(b2.name)+'・'+fmtDate(b2.date)+' '+b2.time:'本週還沒有已確認的預約。'}) }
+    else if(m==='closure'){ ownerSay({t:'bot',x:'要休息哪一天？點選日期就能設定，已有的預約會先提醒你。<small>（試玩版不會真的設定）</small>'}) }
+    else if(m==='revenue'){ ownerSay({t:'bot',x:'今日 NT$ 0・本週 NT$ 0・本月 NT$ 0<small>收款後會自動累計。</small>'}) }
+    else if(m==='admin'){ ownerSay({t:'bot',x:'會開啟網頁後台，可以看整個月的月曆、客戶與設定。<small>（試玩版沒有開啟）</small>'}) }
+    render();
+  });
+  function keepForm(){var nm=document.getElementById('nm'),ph=document.getElementById('ph');if(nm)S.c.name=nm.value;if(ph)S.c.phone=ph.value;render()}
+  fresh();render();
+})();
+</script>
+</body></html>
