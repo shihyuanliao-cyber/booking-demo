@@ -2,7 +2,7 @@
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>預約系統試玩</title>
 <style>
-/* 版面：手機優先，單欄；桌機時置中成一支手機的寬度。配色沿用產品的馬卡龍藍，單一亮色主題。 */
+/* 手機優先、單欄；桌機置中成一支手機的寬度。配色沿用產品的馬卡龍藍，單一亮色主題。 */
 :root{
   --bg:#eef5fd; --bg2:#f8fbff; --card:#ffffff; --ink:#2b3a4f; --muted:#5f7088;
   --accent:#8cc4fb; --accent-text:#17365f; --accent-ink:#2569b5; --line:#d9e6f7;
@@ -31,10 +31,11 @@ button:focus-visible{outline:3px solid var(--accent-ink);outline-offset:2px}
 .bubble.me{align-self:flex-end;background:var(--mine);border-color:#b7d6f6;border-radius:16px 16px 4px 16px}
 .bubble small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
 .hint{align-self:center;background:var(--warn-bg);color:var(--warn-ink);border-radius:14px;padding:10px 14px;font-size:15px;text-align:center}
-.menu{display:grid;border-top:1px solid var(--line);background:var(--card)}
-.menu.c3{grid-template-columns:repeat(3,1fr)}
-.menu button{border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--card);padding:16px 4px;font-weight:700;color:var(--accent-ink)}
-.menu button:nth-child(3n){border-right:0}
+.menu{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);background:var(--card)}
+.menu button{grid-column:span 2;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--card);padding:16px 4px;font-weight:700;color:var(--accent-ink)}
+.menu button:nth-child(3){border-right:0}
+.menu.o button:nth-child(n+4){grid-column:span 3}
+.menu.o button:nth-child(5){border-right:0}
 .menu button:active{background:#eaf3fe}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
 .list{display:flex;flex-direction:column;gap:10px}
@@ -57,24 +58,32 @@ label{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:15px}
 input{font:inherit;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--ink)}
 input:focus-visible{outline:3px solid var(--accent-ink);outline-offset:1px}
 .btn{border:0;border-radius:14px;padding:14px;background:var(--accent);color:var(--accent-text);font-weight:800;width:100%}
+.btn.small{padding:10px;font-size:15px}
 .btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--accent-ink)}
 .btn.ok{background:#bfe8cc;color:var(--ok-ink)} .btn.no{background:#fbd3de;color:var(--no-ink)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700}
-.badge.wait{background:var(--warn-bg);color:var(--warn-ink)}.badge.ok{background:var(--ok-bg);color:var(--ok-ink)}.badge.no{background:var(--no-bg);color:var(--no-ink)}
+.badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700;white-space:nowrap}
+.badge.wait{background:var(--warn-bg);color:var(--warn-ink)}.badge.ok{background:var(--ok-bg);color:var(--ok-ink)}.badge.no{background:var(--no-bg);color:var(--no-ink)}.badge.pay{background:#e3effc;color:var(--accent-ink)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-weight:700;color:var(--muted)}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
-.anav{display:flex;gap:4px;overflow-x:auto;padding:0 8px;background:var(--card);border-bottom:2px solid var(--sun)}
+.big{font-size:40px;line-height:1}
+.center{text-align:center}
+.foot{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+.foot button{border:0;background:none;color:var(--accent-ink);text-decoration:underline;font-size:13px}
+/* 店務管理 */
+.anav{display:flex;gap:2px;overflow-x:auto;padding:0 6px;background:var(--card);border-bottom:2px solid var(--sun)}
 .anav button{border:0;background:none;padding:12px 10px;white-space:nowrap;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px}
 .anav button[aria-current="true"]{color:var(--accent-ink);border-bottom-color:var(--accent-ink)}
-.pills{display:flex;gap:8px}
+.cnt{background:#c0463f;color:#fff;border-radius:999px;padding:0 7px;font-size:13px;margin-left:4px}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
 .pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 16px;font-weight:700;color:var(--muted)}
 .pill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
 .warnbar{background:var(--warn-bg);color:var(--warn-ink);border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;gap:8px;font-weight:700;width:100%;border:0;text-align:left}
 .bk{display:flex;flex-direction:column;gap:2px}
 .bk .t{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:700}
 .sm{font-size:14px;color:var(--muted)}
+h2.pg{margin:0;font-size:20px}
 .acal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
 .acal .h{font-size:12px;color:var(--muted)}
 .acal button,.acal i{min-height:48px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:15px;position:relative;line-height:1.2}
@@ -84,14 +93,20 @@ input:focus-visible{outline:3px solid var(--accent-ink);outline-offset:1px}
 .acal small{font-size:11px;font-weight:400;color:var(--muted)}
 .acal .d{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--sun)}
 .acal i{border:0;background:none;min-height:0}
-.hrow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+.hrow{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
 .hrow:last-child{border:0}
-.sw{width:44px;height:26px;border-radius:999px;background:var(--accent);position:relative;border:0}
-.sw::after{content:"";position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff}
-.big{font-size:40px;line-height:1}
-.center{text-align:center}
-.foot{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
-.foot button{border:0;background:none;color:var(--accent-ink);text-decoration:underline;font-size:13px}
+.grp{font-size:13px;font-weight:700;color:var(--muted);margin:6px 0 -4px}
+.sr{width:100%;text-align:left;border:0;background:none;display:flex;justify-content:space-between;gap:8px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.sr:last-child{border:0}
+.sr span.s{display:block;font-size:13px;color:var(--muted);font-weight:400}
+.sr[data-sub]{cursor:pointer}
+.sr:not([data-sub]){cursor:default}
+.big2{font-size:30px;font-weight:800;color:var(--accent-ink);line-height:1.2}
+.bars{display:flex;align-items:flex-end;gap:4px;height:90px;margin-top:8px}
+.bars div{flex:1;background:var(--accent);border-radius:5px 5px 0 0;min-height:3px}
+.bars div.z{background:#dfe9f6}
+.axis{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:4px}
+.mrow{display:flex;justify-content:space-between;padding:6px 0}
 @media (prefers-reduced-motion:no-preference){.body>*{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}}}
 </style></head><body>
 <div class="app">
@@ -100,7 +115,7 @@ input:focus-visible{outline:3px solid var(--accent-ink);outline-offset:1px}
     <div class="switch" role="group" aria-label="切換角色">
       <button id="tabC" aria-pressed="true">客人</button>
       <button id="tabO" aria-pressed="false">老闆的 LINE<span id="dot" class="dot" hidden></span></button>
-      <button id="tabA" aria-pressed="false">網頁後台</button>
+      <button id="tabA" aria-pressed="false">店務管理</button>
     </div>
   </div>
   <div class="phone" id="phone"></div>
@@ -111,46 +126,50 @@ input:focus-visible{outline:3px solid var(--accent-ink);outline-offset:1px}
 (function(){
   var SHOP='安心推拿館';
   var SERVICES=[{id:1,name:'肩頸放鬆',min:30,price:500},{id:2,name:'全身推拿',min:60,price:1000},{id:3,name:'全身推拿（長時間）',min:90,price:1450},{id:4,name:'腳底按摩',min:40,price:600}];
-  var WD=['日','一','二','三','四','五','六'];
   var PARTS=['肩頸','背部','腰部','腿部','腳底'];
-  var S; // 全部狀態都在記憶體，重新整理就重來
+  var WD=['日','一','二','三','四','五','六'];
+  var S;
+
+  function addD(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
+  function pad(n){return n<10?'0'+n:''+n}
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function money(n){return 'NT$ '+n.toLocaleString('en-US')}
+  function fmtDate(d){return (d.getMonth()+1)+' 月 '+d.getDate()+' 日（'+WD[d.getDay()]+'）'}
+  function sameDay(a,b){return a.getFullYear()==b.getFullYear()&&a.getMonth()==b.getMonth()&&a.getDate()==b.getDate()}
+  function mk(name,si,off,time,status,paid){return {name:name,svc:SERVICES[si],date:addD(S0(),off),time:time,status:status,paid:paid||null,parts:[]}}
+  function S0(){var t=new Date();t.setHours(0,0,0,0);return t}
 
   function fresh(){
-    var t=new Date(); t.setHours(0,0,0,0);
-    S={role:'c',c:{step:'chat',svc:null,parts:['肩頸'],date:null,month:new Date(t.getFullYear(),t.getMonth(),1),slot:null,name:'林先生',phone:'0912-345-678',msgs:[]},
-       o:{msgs:[],menuShown:false},booking:null,today:t,
-       a:{page:'ov',bk:'wait',month:new Date(t.getFullYear(),t.getMonth(),1),day:null},
-       fake:[
-         {name:'陳小姐',svc:SERVICES[0],date:addD(t,1),time:'10:00',status:'ok'},
-         {name:'黃先生',svc:SERVICES[1],date:addD(t,1),time:'14:00',status:'ok'},
-         {name:'周小姐',svc:SERVICES[2],date:addD(t,2),time:'11:00',status:'wait'},
-         {name:'吳先生',svc:SERVICES[3],date:addD(t,3),time:'19:00',status:'ok'},
-         {name:'許小姐',svc:SERVICES[1],date:addD(t,5),time:'15:00',status:'wait'}]};
+    var t=S0();
+    S={role:'c',today:t,mine:null,
+       c:{step:'chat',svc:null,date:null,month:new Date(t.getFullYear(),t.getMonth(),1),slot:null,name:'林先生',phone:'0912-345-678',parts:['肩頸'],msgs:[]},
+       o:{msgs:[]},
+       a:{page:'ov',sub:null,bk:'wait',month:new Date(t.getFullYear(),t.getMonth(),1),day:null},
+       bk:[mk('陳小姐',0,-9,'10:00','ok','cash'),mk('黃先生',1,-7,'14:00','ok','linepay'),mk('周小姐',2,-5,'11:00','ok','cash'),
+           mk('吳先生',3,-3,'19:00','ok','cash'),mk('李小姐',1,-2,'15:30','ok','cash'),mk('王先生',0,-1,'18:00','ok','linepay'),
+           mk('許小姐',1,0,'10:00','ok',null),
+           mk('蔡小姐',1,1,'11:00','ok'),mk('趙先生',3,2,'16:00','wait'),mk('孫小姐',2,4,'13:00','wait')]};
     S.c.msgs.push({t:'bot',x:'歡迎光臨'+SHOP+'！點下面的「預約」就能選時間。'});
     S.o.msgs.push({t:'bot',x:'你好，這裡是你的老闆選單。有新預約我會在這裡通知你。'});
   }
-  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-  function addD(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
-  function pad(n){return n<10?'0'+n:''+n}
-  function fmtDate(d){return (d.getMonth()+1)+' 月 '+d.getDate()+' 日（'+WD[d.getDay()]+'）'}
-  function sameDay(a,b){return a.getFullYear()==b.getFullYear()&&a.getMonth()==b.getMonth()&&a.getDate()==b.getDate()}
-  function openDay(d){return d.getDay()!==0 && d>S.today}
-  // 固定的「已被預約」時段（依日期算，每次看到都一樣）
+  function openDay(d){return d.getDay()!==0&&d>S.today} // 不接受當天預約
   function isBooked(d,h,m){var k=(d.getDate()*7+h*3+(m?5:0))%9;return k===0||k===4}
-  function slotsOf(d){var a=[];for(var h=10;h<20;h++){a.push([h,0]);a.push([h,30])}a.push([20,0]);return a}
+  function slotsOf(){var a=[];for(var h=10;h<20;h++){a.push([h,0]);a.push([h,30])}a.push([20,0]);return a}
+  function ownerSay(m){S.o.msgs.push(m)}
+  function payLabel(p){return p==='cash'?'現金':p==='linepay'?'LINE Pay':''}
 
-  function svcBtn(s){return '<button class="svc" data-svc="'+s.id+'"><b>'+s.name+'</b><span>'+s.min+' 分鐘 · NT$ '+s.price.toLocaleString('en-US')+'</span></button>'}
-  function bubble(m){return '<div class="bubble'+(m.t==='me'?' me':'')+'">'+m.x+'</div>'}
-
+  /* ───────── 客人 ───────── */
+  function svcBtn(s){return '<button class="svc" data-svc="'+s.id+'"><b>'+s.name+'</b><span>'+s.min+' 分鐘 · '+money(s.price)+'</span></button>'}
+  function bubble(m){return m.html?m.html:'<div class="bubble'+(m.t==='me'?' me':'')+'">'+m.x+'</div>'}
   function customer(){
-    var c=S.c,h='',body='',menu='',bar='';
+    var c=S.c,body='',menu='',bar='';
     if(c.step==='chat'){
       bar='<div class="bar">'+SHOP+'</div>';
       body=c.msgs.map(bubble).join('');
-      if(!S.booking) body+='<div class="hint">先點下面的「預約」試試看</div>';
-      menu='<div class="menu c3"><button data-act="book">預約</button><button data-act="mine">我的預約</button><button data-act="contact">聯絡我們</button></div>';
+      if(!S.mine) body+='<div class="hint">先點下面的「預約」試試看</div>';
+      menu='<div class="menu"><button data-act="book">預約</button><button data-act="mine">預約紀錄</button><button data-act="contact">聯絡我們</button></div>';
     }else{
-      var title={services:'選擇服務',cal:'選擇日期',slots:'選擇時間',form:'填寫資料',done:'預約完成',mine:'我的預約'}[c.step];
+      var title={services:'選擇服務',cal:'選擇日期',slots:'選擇時間',form:'填寫資料',done:'預約完成',mine:'預約紀錄'}[c.step];
       var back=(c.step==='done')?'':'<button class="back" data-act="back">‹ 返回</button>';
       bar='<div class="bar">'+back+'<span>'+title+'</span></div>';
       if(c.step==='services') body='<div class="list">'+SERVICES.map(svcBtn).join('')+'</div>';
@@ -158,27 +177,24 @@ input:focus-visible{outline:3px solid var(--accent-ink);outline-offset:1px}
       if(c.step==='slots') body=slotsHtml();
       if(c.step==='form') body=formHtml();
       if(c.step==='done') body='<div class="card center"><div class="big">✓</div><h2 style="margin:8px 0 4px">已送出預約</h2><p style="margin:0;color:var(--muted)">老闆確認後會用 LINE 通知你。</p></div>'+summary()+'<button class="btn" data-act="home">回聊天室</button><button class="btn ghost" data-act="toOwner">看老闆這邊收到什麼 →</button>';
-      if(c.step==='mine') body=mineHtml();
+      if(c.step==='mine') body=S.mine?summary():'<div class="card center" style="color:var(--muted)">還沒有預約</div>';
     }
     return bar+'<div class="body">'+body+'</div>'+menu;
   }
-  function summary(){var b=S.booking;if(!b)return '';
+  function summary(){var b=S.mine;if(!b)return '';
     var st=b.status==='wait'?'<span class="badge wait">等老闆確認</span>':b.status==='ok'?'<span class="badge ok">已確認</span>':'<span class="badge no">未能接受</span>';
-    return '<div class="card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>'+esc(b.svc.name)+'</b>'+st+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'</div><div style="color:var(--accent-ink);font-weight:700">NT$ '+b.svc.price.toLocaleString('en-US')+'</div></div>'}
-  function mineHtml(){return S.booking?summary():'<div class="card center" style="color:var(--muted)">還沒有預約</div>'}
+    return '<div class="card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>'+esc(b.svc.name)+'</b>'+st+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'</div><div style="color:var(--accent-ink);font-weight:700">'+money(b.svc.price)+'</div></div>'}
   function calHtml(){
-    var c=c0(),m=c.month,first=new Date(m.getFullYear(),m.getMonth(),1),days=new Date(m.getFullYear(),m.getMonth()+1,0).getDate(),g='';
+    var c=S.c,m=c.month,first=new Date(m.getFullYear(),m.getMonth(),1),days=new Date(m.getFullYear(),m.getMonth()+1,0).getDate(),g='';
     WD.forEach(function(w){g+='<div class="h">'+w+'</div>'});
     for(var i=0;i<first.getDay();i++)g+='<i></i>';
     for(var d=1;d<=days;d++){var dt=new Date(m.getFullYear(),m.getMonth(),d);g+=openDay(dt)?'<button data-day="'+d+'">'+d+'</button>':'<i>'+d+'</i>'}
-    var prevOff=(m.getFullYear()==S.today.getFullYear()&&m.getMonth()==S.today.getMonth()),nextOff=((m.getFullYear()*12+m.getMonth())-(S.today.getFullYear()*12+S.today.getMonth()))>=1;
-    return '<div class="card"><div class="mon"><button data-mon="-1" aria-label="上個月"'+(prevOff?' disabled':'')+'>‹</button><span>'+m.getFullYear()+' 年 '+(m.getMonth()+1)+' 月</span><button data-mon="1" aria-label="下個月"'+(nextOff?' disabled':'')+'>›</button></div><div class="cal">'+g+'</div><p class="center" style="color:var(--muted);font-size:14px;margin:10px 0 0">有顏色的日子可以預約</p></div>'}
-  function c0(){return S.c}
+    var idx=m.getFullYear()*12+m.getMonth(),t0=S.today.getFullYear()*12+S.today.getMonth();
+    return '<div class="card"><div class="mon"><button data-mon="-1" aria-label="上個月"'+(idx<=t0?' disabled':'')+'>‹</button><span>'+m.getFullYear()+' 年 '+(m.getMonth()+1)+' 月</span><button data-mon="1" aria-label="下個月"'+(idx-t0>=1?' disabled':'')+'>›</button></div><div class="cal">'+g+'</div><p class="center" style="color:var(--muted);font-size:14px;margin:10px 0 0">有顏色的日子可以預約</p></div>'}
   function slotsHtml(){
-    var c=S.c,d=c.date,g='';
-    slotsOf(d).forEach(function(s){var t=pad(s[0])+':'+pad(s[1]);
-      if(isBooked(d,s[0],s[1])) g+='<button class="slot" disabled>'+t+'<small>已預約</small></button>';
-      else g+='<button class="slot" data-slot="'+t+'">'+t+'</button>'});
+    var d=S.c.date,g='';
+    slotsOf().forEach(function(s){var t=pad(s[0])+':'+pad(s[1]);
+      g+=isBooked(d,s[0],s[1])?'<button class="slot" disabled>'+t+'<small>已預約</small></button>':'<button class="slot" data-slot="'+t+'">'+t+'</button>'});
     return '<div class="card"><b>'+fmtDate(d)+'</b><p style="margin:2px 0 12px;color:var(--muted);font-size:14px">已被約走的時段會變灰，不會撞期。</p><div class="slots">'+g+'</div></div>'}
   function formHtml(){
     var c=S.c;
@@ -188,73 +204,107 @@ input:focus-visible{outline:3px solid var(--accent-ink);outline-offset:1px}
       '<div class="card"><b style="font-size:15px">想加強的部位（選填）</b><div class="chips">'+PARTS.map(function(p){return '<button type="button" class="chip" data-part="'+p+'" aria-pressed="'+(c.parts.indexOf(p)>-1)+'">'+p+'</button>'}).join('')+'</div></div>'+
       '<button class="btn" data-act="submit">送出預約</button>'}
 
+  /* ───────── 老闆的 LINE ───────── */
+  function pendingCard(b){
+    return '<div class="card" data-card="'+S.bk.indexOf(b)+'"><b>新預約</b><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'</div>'+(b.parts.length?'<div style="color:var(--muted)">想加強：'+b.parts.join('、')+'</div>':'')+'<div class="row" style="margin-top:10px"><button class="btn ok" data-dec="ok" data-i="'+S.bk.indexOf(b)+'">接受</button><button class="btn no" data-dec="no" data-i="'+S.bk.indexOf(b)+'">約不了</button></div></div>'}
+  function payCard(b){var i=S.bk.indexOf(b);
+    return '<div class="card" data-pcard="'+i+'"><b>還沒收錢</b><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'・'+money(b.svc.price)+'</div><div class="row" style="margin-top:10px"><button class="btn small ghost" data-pay="cash" data-i="'+i+'">已收現金</button><button class="btn small ghost" data-pay="linepay" data-i="'+i+'">已收 LINE Pay</button></div></div>'}
   function owner(){
-    var o=S.o,bar='<div class="bar">'+SHOP+'・老闆選單</div>',body=o.msgs.map(function(m){return m.html?m.html:bubble(m)}).join('');
-    if(!S.booking&&!o.msgs.some(function(m){return m.tag==='hint'}))body+='<div class="hint">還沒有新預約。先到「客人」約一筆，再回來看。<br><button class="btn ghost" style="margin-top:8px" data-act="toCust">去客人那邊</button></div>';
-    var menu='<div class="menu c3"><button data-m="today">今天</button><button data-m="closure">公休</button><button data-m="pending">待審核</button><button data-m="week">本週</button><button data-m="revenue">營收</button><button data-m="admin">後台</button></div>';
+    var o=S.o,bar='<div class="bar">'+SHOP+'・老闆選單</div>',body=o.msgs.map(bubble).join('');
+    if(!S.mine&&!o.msgs.some(function(m){return m.hint}))body+='<div class="hint">還沒有客人新預約。先到「客人」約一筆，再回來看。<br><button class="btn ghost" style="margin-top:8px" data-act="toCust">去客人那邊</button></div>';
+    var menu='<div class="menu o"><button data-m="new">新預約</button><button data-m="today">今天</button><button data-m="week">本週</button><button data-m="walkin">幫客人預約</button><button data-m="admin">店務管理</button></div>';
     return bar+'<div class="body">'+body+'</div>'+menu;
   }
-  function pendingCard(){
-    var b=S.booking;
-    return '<div class="card" data-card="1"><b>新預約</b><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'</div>'+(b.parts.length?'<div style="color:var(--muted)">想加強：'+b.parts.join('、')+'</div>':'')+'<div class="row" style="margin-top:10px"><button class="btn ok" data-dec="ok">接受</button><button class="btn no" data-dec="no">婉拒</button></div></div>'}
-
-  function render(){
-    document.getElementById('phone').innerHTML=S.role==='c'?customer():S.role==='o'?owner():adminView();
-    document.getElementById('tabC').setAttribute('aria-pressed',S.role==='c');
-    document.getElementById('tabO').setAttribute('aria-pressed',S.role==='o');
-    document.getElementById('tabA').setAttribute('aria-pressed',S.role==='a');
-    document.getElementById('dot').hidden=!(S.booking&&S.booking.status==='wait'&&S.role==='c');
-    var b=document.querySelector('.body');if(b&&S.role!=='a')b.scrollTop=b.scrollHeight;
-  }
-  function ownerSay(m){S.o.msgs.push(m)}
-
-  function allB(){var a=S.fake.slice();if(S.booking)a.push(S.booking);return a.sort(function(x,y){return x.date-y.date||(x.time<y.time?-1:1)})}
-  function stBadge(b){return b.status==='wait'?'<span class="badge wait">待審核</span>':b.status==='ok'?'<span class="badge ok">已確認</span>':'<span class="badge no">已婉拒</span>'}
-  function bkCard(b,act){var i=allB().indexOf(b);
-    return '<div class="card bk"><div class="t"><span>'+fmtDate(b.date)+' '+b.time+'</span>'+stBadge(b)+'</div><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div class="sm">NT$ '+b.svc.price.toLocaleString('en-US')+(b.parts&&b.parts.length?'・想加強：'+b.parts.join('、'):'')+'</div>'+
-      (act&&b.status==='wait'?'<div class="row" style="margin-top:8px"><button class="btn ok" data-adec="ok" data-i="'+i+'">接受</button><button class="btn no" data-adec="no" data-i="'+i+'">婉拒</button></div>':'')+'</div>'}
   function decide(b,ok){
     if(b.status!=='wait')return;
     b.status=ok?'ok':'no';
-    if(b===S.booking){
-      S.o.msgs=S.o.msgs.filter(function(m){return !(m.html&&m.html.indexOf('data-card')>-1)});
-      ownerSay({html:'<div class="card"><b>'+(ok?'已接受':'已婉拒')+'</b><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'</div><p style="margin:8px 0 0;color:var(--muted);font-size:14px">客人的 LINE 會收到通知。</p></div>'});
-      S.c.msgs.push({t:'bot',x:ok?'你的預約已確認 ✓<small>'+esc(b.svc.name)+'・'+fmtDate(b.date)+' '+b.time+'</small>':'很抱歉，這個時段無法接受，歡迎改約其他時間。'});
-    }
+    S.o.msgs=S.o.msgs.filter(function(m){return !(m.html&&m.html.indexOf('data-card="'+S.bk.indexOf(b)+'"')>-1)});
+    ownerSay({html:'<div class="card"><b>'+(ok?'已接受':'已回覆約不了')+'</b><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div style="color:var(--muted)">'+fmtDate(b.date)+' '+b.time+'</div><p style="margin:8px 0 0;color:var(--muted);font-size:14px">客人的 LINE 會收到通知。</p></div>'});
+    if(b===S.mine)S.c.msgs.push({t:'bot',x:ok?'你的預約已確認 ✓<small>'+esc(b.svc.name)+'・'+fmtDate(b.date)+' '+b.time+'</small>':'很抱歉，這個時段無法接受，歡迎改約其他時間。'});
   }
+  function setPaid(b,method){
+    b.paid=method;
+    S.o.msgs=S.o.msgs.filter(function(m){return !(m.html&&m.html.indexOf('data-pcard="'+S.bk.indexOf(b)+'"')>-1)});
+    if(method)ownerSay({html:'<div class="card"><b>已記錄收款</b><div>'+esc(b.name)+' · '+money(b.svc.price)+'（'+payLabel(method)+'）</div><button class="btn small ghost" style="margin-top:8px" data-pay="undo" data-i="'+S.bk.indexOf(b)+'">撤銷</button></div>'});
+  }
+  function unpaid(){return S.bk.filter(function(b){return b.status==='ok'&&!b.paid&&b.date<=S.today})}
+
+  /* ───────── 店務管理 ───────── */
+  function stBadge(b){return b.status==='wait'?'<span class="badge wait">新預約</span>':b.status==='ok'?'<span class="badge ok">已確認</span>':'<span class="badge no">約不了</span>'}
+  function bkCard(b,act){var i=S.bk.indexOf(b);
+    return '<div class="card bk"><div class="t"><span>'+fmtDate(b.date)+' '+b.time+'</span>'+stBadge(b)+'</div><div>'+esc(b.name)+' · '+esc(b.svc.name)+'</div><div class="sm">'+money(b.svc.price)+(b.parts&&b.parts.length?'・想加強：'+b.parts.join('、'):'')+(b.paid?'・已收（'+payLabel(b.paid)+'）':'')+'</div>'+
+      (act&&b.status==='wait'?'<div class="row" style="margin-top:8px"><button class="btn ok" data-adec="ok" data-i="'+i+'">接受</button><button class="btn no" data-adec="no" data-i="'+i+'">約不了</button></div>':'')+'</div>'}
+  function sorted(){return S.bk.slice().sort(function(x,y){return x.date-y.date||(x.time<y.time?-1:1)})}
   function adminView(){
-    var A=S.a,pages=[['ov','總覽'],['bk','預約'],['svc','服務'],['hrs','營業時間']],all=allB(),wait=all.filter(function(b){return b.status==='wait'});
-    var nav='<div class="anav">'+pages.map(function(p){return '<button data-ap="'+p[0]+'"'+(A.page===p[0]?' aria-current="true"':'')+'>'+p[1]+(p[0]==='bk'&&wait.length?' <span class="badge no" style="background:#c0463f;color:#fff;padding:0 7px">'+wait.length+'</span>':'')+'</button>'}).join('')+'</div>';
+    var A=S.a,all=sorted(),wait=all.filter(function(b){return b.status==='wait'});
+    var pages=[['ov','總覽'],['bk','預約'],['acc','帳務'],['cus','客戶'],['set','設定']];
+    var nav='<div class="anav">'+pages.map(function(p){return '<button data-ap="'+p[0]+'"'+(A.page===p[0]?' aria-current="true"':'')+'>'+p[1]+(p[0]==='bk'&&wait.length?'<span class="cnt">'+wait.length+'</span>':'')+'</button>'}).join('')+'</div>';
     var b='';
     if(A.page==='ov'){
-      b='<h2 style="margin:0">總覽</h2>'+(wait.length?'<button class="warnbar" data-ap="bk">'+wait.length+' 筆預約等你審核<span>前往處理 ›</span></button>':'<div class="hint">目前沒有待審核的預約</div>')+
-        '<div class="sm" style="font-weight:700">接下來的預約</div>'+all.filter(function(x){return x.status==='ok'}).map(function(x){return bkCard(x)}).join('')||'<div class="card sm">還沒有已確認的預約</div>';
+      var up=all.filter(function(x){return x.status==='ok'&&x.date>S.today});
+      b='<h2 class="pg">總覽</h2>'+
+        (wait.length?'<button class="warnbar" data-ap="bk">'+wait.length+' 筆新預約等你處理<span>前往 ›</span></button>':'<div class="hint">目前沒有新預約</div>')+
+        (unpaid().length?'<button class="warnbar" data-ap="acc" style="background:#e3effc;color:var(--accent-ink)">'+unpaid().length+' 筆還沒收錢的預約<span>前往 ›</span></button>':'')+
+        '<div class="grp">接下來的預約</div>'+(up.slice(0,4).map(function(x){return bkCard(x)}).join('')||'<div class="card sm">還沒有已確認的預約</div>');
     }else if(A.page==='bk'){
-      var pills='<div class="pills">'+[['wait','待審核'],['cal','日程'],['all','全部']].map(function(p){return '<button class="pill" data-ab="'+p[0]+'" aria-pressed="'+(A.bk===p[0])+'">'+p[1]+'</button>'}).join('')+'</div>';
+      var pills='<div class="pills">'+[['wait','新預約'],['cal','行事曆'],['all','全部']].map(function(p){return '<button class="pill" data-ab="'+p[0]+'" aria-pressed="'+(A.bk===p[0])+'">'+p[1]+'</button>'}).join('')+'</div>';
       var inner='';
       if(A.bk==='wait')inner=wait.length?wait.map(function(x){return bkCard(x,true)}).join(''):'<div class="card center sm">都處理完了</div>';
-      if(A.bk==='all')inner=all.map(function(x){return bkCard(x,true)}).join('');
+      if(A.bk==='all')inner=all.slice().reverse().map(function(x){return bkCard(x,true)}).join('');
       if(A.bk==='cal')inner=calAdmin(all);
-      b='<h2 style="margin:0">預約</h2>'+pills+inner;
-    }else if(A.page==='svc'){
-      b='<h2 style="margin:0">服務項目</h2>'+SERVICES.map(function(x){return '<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><b>'+x.name+'</b><div class="sm">'+x.min+' 分鐘・NT$ '+x.price.toLocaleString('en-US')+'</div></div><button class="pill">編輯</button></div>'}).join('')+'<div class="sm center">價格、時長、說明都能自己改，不要的項目可以停用。</div>';
-    }else{
-      var days=['週一','週二','週三','週四','週五','週六','週日'];
-      b='<h2 style="margin:0">營業時間</h2><div class="card">'+days.map(function(d,i){return '<div class="hrow"><b>'+d+'</b><span>'+(i<6?'10:00 ～ 21:00':'<span class="sm">公休</span>')+'</span></div>'}).join('')+'</div><div class="sm center">想臨時公休或連休幾天，在這裡一次設定。</div>';
-    }
-    return '<div class="bar">'+SHOP+'・後台</div>'+nav+'<div class="body">'+b+'</div>';
+      b='<h2 class="pg">預約</h2>'+pills+'<button class="btn small ghost" data-act="walkinInfo">＋ 幫客人預約</button>'+inner;
+    }else if(A.page==='acc'){b=accounting();}
+    else if(A.page==='cus'){b=customers(all);}
+    else{b=settings();}
+    return '<div class="bar">'+SHOP+'・店務管理</div>'+nav+'<div class="body">'+b+'</div>';
   }
   function calAdmin(all){
     var A=S.a,m=A.month,first=new Date(m.getFullYear(),m.getMonth(),1),n=new Date(m.getFullYear(),m.getMonth()+1,0).getDate(),g='';
     WD.forEach(function(w){g+='<div class="h">'+w+'</div>'});
     for(var i=0;i<first.getDay();i++)g+='<i></i>';
-    for(var d=1;d<=n;d++){var dt=new Date(m.getFullYear(),m.getMonth(),d),list=all.filter(function(x){return sameDay(x.date,dt)}),hasW=list.some(function(x){return x.status==='wait'});
+    for(var d=1;d<=n;d++){var dt=new Date(m.getFullYear(),m.getMonth(),d),list=all.filter(function(x){return sameDay(x.date,dt)&&x.status!=='no'}),hasW=list.some(function(x){return x.status==='wait'});
       g+='<button data-aday="'+d+'" class="'+(list.length?'has ':'')+(sameDay(dt,S.today)?'today ':'')+(A.day&&sameDay(dt,A.day)?'sel':'')+'">'+d+(list.length?'<small>'+list.length+' 筆</small>':'')+(hasW?'<span class="d"></span>':'')+'</button>'}
-    var dayList=A.day?'<div class="sm" style="font-weight:700;margin-top:10px">'+fmtDate(A.day)+'</div>'+(all.filter(function(x){return sameDay(x.date,A.day)}).map(function(x){return bkCard(x,true)}).join('')||'<div class="card sm center">這天沒有預約</div>'):'<p class="sm center" style="margin:10px 0 0">橘點＝有待審核。點一天看詳細。</p>';
+    var dayList=A.day?'<div class="grp">'+fmtDate(A.day)+'</div>'+(all.filter(function(x){return sameDay(x.date,A.day)}).map(function(x){return bkCard(x,true)}).join('')||'<div class="card sm center">這天沒有預約</div>'):'<p class="sm center" style="margin:6px 0 0">橘點＝有新預約。點一天看詳細。</p>';
     return '<div class="card"><div class="mon"><button data-amon="-1" aria-label="上個月">‹</button><span>'+m.getFullYear()+' 年 '+(m.getMonth()+1)+' 月</span><button data-amon="1" aria-label="下個月">›</button></div><div class="acal">'+g+'</div></div>'+dayList;
   }
+  function accounting(){
+    var from=addD(S.today,-29),paid=S.bk.filter(function(b){return b.status==='ok'&&b.paid&&b.date>=from&&b.date<=S.today});
+    var sum=0,byM={cash:0,linepay:0},bySvc={},byDay={};
+    paid.forEach(function(b){var v=b.svc.price;sum+=v;byM[b.paid]+=v;bySvc[b.svc.name]=(bySvc[b.svc.name]||0)+v;var k=b.date.getTime();byDay[k]=(byDay[k]||0)+v});
+    var days=[],mx=1;for(var i=13;i>=0;i--){var d=addD(S.today,-i),v=byDay[d.getTime()]||0;days.push([d,v]);if(v>mx)mx=v}
+    var bars='<div class="bars" aria-hidden="true">'+days.map(function(x){return '<div class="'+(x[1]?'':'z')+'" style="height:'+Math.max(3,Math.round(x[1]/mx*100))+'%"></div>'}).join('')+'</div><div class="axis"><span>'+(days[0][0].getMonth()+1)+'/'+days[0][0].getDate()+'</span><span>今天</span></div>';
+    var rank=Object.keys(bySvc).sort(function(a,b){return bySvc[b]-bySvc[a]}).map(function(k){return '<div class="mrow"><span>'+k+'</span><b>'+money(bySvc[k])+'</b></div>'}).join('');
+    var un=unpaid().map(function(x){var i=S.bk.indexOf(x);return '<div class="card bk"><div class="t"><span>'+fmtDate(x.date)+' '+x.time+'</span><span class="badge wait">還沒收錢</span></div><div>'+esc(x.name)+' · '+esc(x.svc.name)+'・'+money(x.svc.price)+'</div><div class="row" style="margin-top:8px"><button class="btn small ghost" data-apay="cash" data-i="'+i+'">已收現金</button><button class="btn small ghost" data-apay="linepay" data-i="'+i+'">已收 LINE Pay</button></div></div>'}).join('');
+    return '<h2 class="pg">帳務</h2><div class="card"><div class="sm">近 30 天實收</div><div class="big2">'+money(sum)+'</div>'+bars+'</div>'+
+      '<div class="card"><b>收款方式</b><div class="mrow"><span>現金</span><b>'+money(byM.cash)+'</b></div><div class="mrow"><span>LINE Pay</span><b>'+money(byM.linepay)+'</b></div></div>'+
+      '<div class="card"><b>哪個服務賺最多</b>'+(rank||'<div class="sm">還沒有收款紀錄</div>')+'</div>'+
+      '<div class="grp">還沒收錢的預約</div>'+(un||'<div class="card sm center">都收齊了</div>')+
+      '<div class="sm center">可選單月、近半年、今年或自訂區間，也能匯出 CSV 給會計。</div>';
+  }
+  function customers(all){
+    var m={};all.forEach(function(b){if(b.status==='no')return;var o=m[b.name]||(m[b.name]={n:0,last:b.date});o.n++;if(b.date>o.last)o.last=b.date});
+    var rows=Object.keys(m).map(function(k){return '<div class="sr" style="cursor:default"><div><b>'+esc(k)+'</b><span class="s">最近預約 '+fmtDate(m[k].last)+'</span></div><span class="badge pay">'+m[k].n+' 次</span></div>'}).join('');
+    return '<h2 class="pg">客戶</h2><div class="card" style="padding-block:4px">'+rows+'</div><div class="sm center">可搜尋、加備註、標記黑名單，也能匯出或刪除某位客人的資料。</div>';
+  }
+  function settings(){
+    var A=S.a;
+    if(A.sub==='svc')return '<button class="back pill" data-sub="" style="align-self:flex-start">‹ 設定</button><h2 class="pg">服務項目</h2>'+SERVICES.map(function(x){return '<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><b>'+x.name+'</b><div class="sm">'+x.min+' 分鐘・'+money(x.price)+'</div></div><span class="badge pay">編輯</span></div>'}).join('')+'<div class="sm center">價格、時長都能自己改，不要的項目可以停用。</div>';
+    if(A.sub==='hrs'){var days=['週一','週二','週三','週四','週五','週六','週日'];
+      return '<button class="back pill" data-sub="" style="align-self:flex-start">‹ 設定</button><h2 class="pg">營業時間</h2><div class="card">'+days.map(function(d,i){return '<div class="hrow"><b>'+d+'</b><span>'+(i<6?'10:00 ～ 21:00':'<span class="sm">休息</span>')+'</span></div>'}).join('')+'</div><div class="sm center">臨時休息、連休幾天，也在這裡一次設定。</div>'}
+    function row(t,s,sub){return '<button class="sr"'+(sub?' data-sub="'+sub+'"':'')+'><div><b>'+t+'</b><span class="s">'+s+'</span></div>'+(sub?'<span style="color:var(--accent-ink)">›</span>':'')+'</button>'}
+    return '<h2 class="pg">設定</h2>'+
+      '<div class="grp">店家與預約</div><div class="card" style="padding-block:4px">'+row('店家資訊與預約規則','店名、電話、幾天前可預約、能不能預約當天')+row('服務項目','名稱、時長、價格','svc')+row('營業時間與休息日','每週時間、臨時休息、連休','hrs')+row('客人要填的資料','預約時要問客人什麼')+row('分店','有第二間店時再用，各店時間與休息日分開')+'</div>'+
+      '<div class="grp">LINE</div><div class="card" style="padding-block:4px">'+row('訊息額度','本月用了多少則，快用完會提醒你')+row('通知與文字','新預約、提醒的訊息內容可以自己改')+'</div>'+
+      '<div class="grp">資料與安全</div><div class="card" style="padding-block:4px">'+row('備份','每天自動備份，可下載存到自己電腦')+row('搬家','要換主機時，一鍵打包帶走全部資料')+'</div>';
+  }
 
-
+  /* ───────── 事件 ───────── */
+  function render(){
+    document.getElementById('phone').innerHTML=S.role==='c'?customer():S.role==='o'?owner():adminView();
+    ['C','O','A'].forEach(function(k,i){document.getElementById('tab'+k).setAttribute('aria-pressed',S.role==='coa'.charAt(i))});
+    document.getElementById('dot').hidden=!(S.mine&&S.mine.status==='wait'&&S.role==='c');
+    var b=document.querySelector('.body');if(b&&S.role!=='a')b.scrollTop=b.scrollHeight;
+  }
   document.addEventListener('click',function(e){
     var t=e.target.closest('button');if(!t)return;
     var c=S.c;
@@ -266,49 +316,64 @@ input:focus-visible{outline:3px solid var(--accent-ink);outline-offset:1px}
     if(t.dataset.act==='toCust'){S.role='c';return render()}
     if(S.role==='a'){
       var A=S.a;
-      if(t.dataset.ap)A.page=t.dataset.ap;
+      if(t.dataset.ap){A.page=t.dataset.ap;A.sub=null}
+      else if(t.dataset.sub!==undefined){A.sub=t.dataset.sub||null}
       else if(t.dataset.ab){A.bk=t.dataset.ab}
-      else if(t.dataset.adec){decide(allB()[+t.dataset.i],t.dataset.adec==='ok')}
+      else if(t.dataset.adec){decide(S.bk[+t.dataset.i],t.dataset.adec==='ok')}
+      else if(t.dataset.apay){setPaid(S.bk[+t.dataset.i],t.dataset.apay)}
       else if(t.dataset.amon){A.month=new Date(A.month.getFullYear(),A.month.getMonth()+ +t.dataset.amon,1);A.day=null}
       else if(t.dataset.aday){A.day=new Date(A.month.getFullYear(),A.month.getMonth(),+t.dataset.aday)}
+      else if(t.dataset.act==='walkinInfo'){t.outerHTML='<div class="card sm">客人打電話或到店時，在這裡輸入姓名、電話和時間，就能幫他預約。（試玩版不會真的新增）</div>';return}
       return render();
     }
     if(S.role==='c'){
       var a=t.dataset.act;
-      if(a==='book'){c.step='services'}
-      else if(a==='mine'){c.step='mine'}
+      if(a==='book')c.step='services';
+      else if(a==='mine')c.step='mine';
       else if(a==='contact'){c.msgs.push({t:'me',x:'聯絡我們'});c.msgs.push({t:'bot',x:SHOP+'<small>電話 02-1234-5678（示範用）</small>'})}
-      else if(a==='back'){c.step={services:'chat',cal:'services',slots:'cal',form:'slots',mine:'chat'}[c.step]||'chat'}
-      else if(a==='home'){c.step='chat'}
-      else if(t.dataset.part){var i=c.parts.indexOf(t.dataset.part);if(i>-1)c.parts.splice(i,1);else c.parts.push(t.dataset.part);return keepForm()}
+      else if(a==='back')c.step={services:'chat',cal:'services',slots:'cal',form:'slots',mine:'chat'}[c.step]||'chat';
+      else if(a==='home')c.step='chat';
       else if(a==='submit'){
         c.name=(document.getElementById('nm').value||'').trim()||'林先生';c.phone=document.getElementById('ph').value;
-        S.booking={svc:c.svc,date:c.date,time:c.slot,name:c.name,parts:c.parts.slice(),status:'wait'};
-        c.msgs.push({t:'me',x:'預約結果'});
+        var nb={name:c.name,svc:c.svc,date:c.date,time:c.slot,status:'wait',paid:null,parts:c.parts.slice()};
+        S.bk.push(nb);S.mine=nb;
+        c.msgs.push({t:'me',x:'預約紀錄'});
         c.msgs.push({t:'bot',x:'已收到你的預約：<b>'+esc(c.svc.name)+'</b><small>'+fmtDate(c.date)+' '+c.slot+'・等老闆確認</small>'});
-        ownerSay({t:'bot',x:'有一筆新預約，請看下面卡片。',tag:'new'});
-        ownerSay({html:pendingCard()});
+        ownerSay({t:'bot',x:'有一筆新預約，請看下面卡片。'});
+        ownerSay({html:pendingCard(nb)});
         c.step='done';
       }
+      else if(t.dataset.part){var i=c.parts.indexOf(t.dataset.part);if(i>-1)c.parts.splice(i,1);else c.parts.push(t.dataset.part);keepForm();return}
       else if(t.dataset.svc){c.svc=SERVICES.filter(function(s){return s.id==t.dataset.svc})[0];c.step='cal'}
       else if(t.dataset.mon){c.month=new Date(c.month.getFullYear(),c.month.getMonth()+ +t.dataset.mon,1)}
       else if(t.dataset.day){c.date=new Date(c.month.getFullYear(),c.month.getMonth(),+t.dataset.day);c.step='slots'}
       else if(t.dataset.slot){c.slot=t.dataset.slot;c.step='form'}
       return render();
     }
-    // 老闆
-    var o=S.o;
-    if(t.dataset.dec){decide(S.booking,t.dataset.dec==='ok');return render()}
+    // 老闆的 LINE
+    if(t.dataset.dec){decide(S.bk[+t.dataset.i],t.dataset.dec==='ok');return render()}
+    if(t.dataset.pay){
+      var pb=S.bk[+t.dataset.i];
+      if(t.dataset.pay==='undo'){S.o.msgs=S.o.msgs.filter(function(m){return !(m.html&&m.html.indexOf('data-pay="undo" data-i="'+S.bk.indexOf(pb)+'"')>-1)});pb.paid=null;ownerSay({t:'bot',x:'已撤銷這筆收款紀錄。'})}
+      else setPaid(pb,t.dataset.pay);
+      return render();
+    }
     var m=t.dataset.m;if(!m)return;
-    var names={today:'今天',closure:'公休',pending:'待審核',week:'本週',revenue:'營收',admin:'後台'};
+    var names={'new':'新預約',today:'今天',week:'本週',walkin:'幫客人預約',admin:'店務管理'};
     ownerSay({t:'me',x:names[m]});
-    var b2=S.booking;
-    if(m==='pending'){ if(b2&&b2.status==='wait') ownerSay({html:pendingCard()}); else ownerSay({t:'bot',x:'目前沒有待審核的預約。'}) }
-    else if(m==='today'){ ownerSay({t:'bot',x:(b2&&b2.status==='ok'&&sameDay(b2.date,S.today))?'今天有 1 筆預約。':'今天沒有預約，好好休息一下。'}) }
-    else if(m==='week'){ ownerSay({t:'bot',x:b2&&b2.status==='ok'?'本週已確認 1 筆：'+esc(b2.name)+'・'+fmtDate(b2.date)+' '+b2.time:'本週還沒有已確認的預約。'}) }
-    else if(m==='closure'){ ownerSay({t:'bot',x:'要休息哪一天？點選日期就能設定，已有的預約會先提醒你。<small>（試玩版不會真的設定）</small>'}) }
-    else if(m==='revenue'){ ownerSay({t:'bot',x:'今日 NT$ 0・本週 NT$ 0・本月 NT$ 0<small>收款後會自動累計。</small>'}) }
-    else if(m==='admin'){ ownerSay({t:'bot',x:'會開啟網頁後台，可以看整個月的月曆、客戶與設定。<small>（試玩版沒有開啟）</small>'}) }
+    var wait=S.bk.filter(function(b){return b.status==='wait'});
+    if(m==='new'){
+      if(wait.length){ownerSay({t:'bot',x:'有 '+wait.length+' 筆新預約：'});wait.slice(0,10).forEach(function(b){ownerSay({html:pendingCard(b)})})}
+      else ownerSay({t:'bot',x:'目前沒有新預約。'});
+    }else if(m==='today'){
+      var td=S.bk.filter(function(b){return sameDay(b.date,S.today)&&b.status==='ok'});
+      ownerSay({t:'bot',x:td.length?'今天有 '+td.length+' 筆預約：<small>'+td.map(function(b){return b.time+' '+esc(b.name)+'・'+esc(b.svc.name)}).join('<br>')+'</small>':'今天沒有預約，好好休息一下。'});
+      unpaid().forEach(function(b){ownerSay({html:payCard(b)})});
+    }else if(m==='week'){
+      var wk=S.bk.filter(function(b){return b.status==='ok'&&b.date>=S.today&&b.date<addD(S.today,7)});
+      ownerSay({t:'bot',x:wk.length?'本週已確認 '+wk.length+' 筆：<small>'+wk.map(function(b){return fmtDate(b.date).replace(/（.）/,'')+' '+b.time+' '+esc(b.name)}).join('<br>')+'</small>':'本週還沒有已確認的預約。'});
+    }else if(m==='walkin'){ownerSay({t:'bot',x:'客人打電話來時，用手機打開「幫客人預約」頁面輸入姓名和時間就好。<small>（試玩版不會開啟）</small>'})}
+    else if(m==='admin'){ownerSay({t:'bot',x:'會用手機原本的瀏覽器開啟店務管理，可以看行事曆、帳務、客戶和設定。<small>（試玩版請按上方「店務管理」）</small>'})}
     render();
   });
   function keepForm(){var nm=document.getElementById('nm'),ph=document.getElementById('ph');if(nm)S.c.name=nm.value;if(ph)S.c.phone=ph.value;render()}
