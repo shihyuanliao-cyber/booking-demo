@@ -7,7 +7,9 @@
   --bg:#eef5fd; --bg2:#f8fbff; --card:#ffffff; --ink:#2b3a4f; --muted:#5f7088;
   --accent:#8cc4fb; --accent-text:#17365f; --accent-ink:#2569b5; --line:#d9e6f7;
   --sun:#f6b756; --warn-bg:#fff3d6; --warn-ink:#6b5420; --ok-bg:#e3f6ea; --ok-ink:#1f6b3a; --no-bg:#fde8ee; --no-ink:#8a2a47;
-  --bubble:#ffffff; --mine:#cfe6fd;
+  --bubble:var(--card); --mine:color-mix(in srgb,var(--accent) 35%,var(--card));
+  --info:#e3effc; --ok-btn:#bfe8cc; --no-btn:#fbd3de;
+  --mbg:#eef5fd; --mink:#2b3a4f; --m-sky:#a9d3fb; --m-cream:#ffe9a8; --m-pink:#ffc9c4; --m-mint:#b5ead3; --m-mist:#d5e3f3;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -18,41 +20,52 @@ button:focus-visible{outline:3px solid var(--accent-ink);outline-offset:2px}
 .app{max-width:430px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;padding-inline:16px;padding-block:14px 18px}
 .top{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
 .tag{font-size:13px;color:var(--muted);text-align:center}
-.switch{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;background:#e1ecfa;border-radius:16px;padding:5px}
+.switch{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;background:var(--line);border-radius:16px;padding:5px}
 .switch button{border:0;background:transparent;border-radius:12px;padding:10px 4px;font-size:15px;font-weight:700;color:var(--muted)}
 .switch button[aria-pressed="true"]{background:var(--card);color:var(--accent-ink);box-shadow:0 1px 6px rgba(60,110,180,.15)}
 .dot[hidden]{display:none}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--sun);margin-left:6px;vertical-align:middle}
 .phone{flex:1;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 6px 24px rgba(60,110,180,.12);min-height:560px}
-.bar{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#f2f7fd;border-bottom:1px solid var(--line);font-weight:700}
+.bar{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--line);font-weight:700}
 .bar .back{border:0;background:none;color:var(--accent-ink);font-weight:700;padding:4px 6px 4px 0}
 .body{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--bg2)}
 .bubble{max-width:88%;background:var(--bubble);border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:10px 14px}
-.bubble.me{align-self:flex-end;background:var(--mine);border-color:#b7d6f6;border-radius:16px 16px 4px 16px}
+.bubble.me{align-self:flex-end;background:var(--mine);border-color:color-mix(in srgb,var(--accent) 55%,var(--card));border-radius:16px 16px 4px 16px}
 .bubble small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
 .hint{align-self:center;background:var(--warn-bg);color:var(--warn-ink);border-radius:14px;padding:10px 14px;font-size:15px;text-align:center}
-.menu{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);background:var(--card)}
-.menu button{grid-column:span 2;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--card);padding:16px 4px;font-weight:700;color:var(--accent-ink)}
-.menu button:nth-child(3){border-right:0}
+.menu{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:8px;background:var(--mbg)}
+.menu button{grid-column:span 2;border:0;border-radius:14px;background:var(--m-sky);padding:16px 4px;font-weight:800;color:var(--mink)}
+.menu button:nth-child(2){background:var(--m-cream)}
+.menu button:nth-child(3){background:var(--m-pink)}
+.menu.o button:nth-child(1){background:var(--m-cream)}
+.menu.o button:nth-child(2){background:var(--m-sky)}
+.menu.o button:nth-child(3){background:var(--m-mint)}
+.menu.o button:nth-child(4){background:var(--m-pink)}
+.menu.o button:nth-child(5){background:var(--m-mist)}
 .menu.o button:nth-child(n+4){grid-column:span 3}
-.menu.o button:nth-child(5){border-right:0}
-.menu button:active{background:#eaf3fe}
+.swatch{width:100%;text-align:left;display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}
+.swatch[aria-pressed="true"]{border-color:var(--accent-ink);box-shadow:0 0 0 2px var(--accent-ink)}
+.swatch i{display:flex;gap:5px;padding:7px;border-radius:9px;border:1px solid var(--line)}
+.swatch i b{flex:1;height:22px;border-radius:6px;border:1px solid rgba(128,128,128,.3)}
+.swatch small{color:var(--muted);font-size:12px}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu button:active{background:var(--info)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
 .list{display:flex;flex-direction:column;gap:10px}
 .svc{width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
-.svc:active{background:#eaf3fe}
+.svc:active{background:var(--info)}
 .svc b{font-size:17px}.svc span{color:var(--accent-ink);font-weight:700}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
 .cal .h{font-size:13px;color:var(--muted);padding:4px 0}
 .cal button,.cal i{aspect-ratio:1;border-radius:10px;border:0;font-weight:700;font-style:normal;display:grid;place-items:center}
 .cal button{background:var(--accent);color:var(--accent-text)}
-.cal i{color:#a8b6c9;font-weight:400}
+.cal i{color:var(--muted);opacity:.55;font-weight:400}
 .mon{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:8px}
 .mon button{border:1px solid var(--line);background:var(--card);border-radius:10px;width:40px;height:40px;color:var(--accent-ink)}
 .mon button:disabled{opacity:.35}
 .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .slot{min-height:56px;display:grid;place-items:center;align-content:center;border:1px solid var(--accent-ink);background:var(--card);color:var(--accent-ink);border-radius:12px;padding:10px 0;font-weight:700}
-.slot[disabled]{border:1px dashed #9fb4cf;background:#eef4fb;color:#7d8da3;text-decoration:line-through;cursor:default}
+.slot[disabled]{border:1px dashed var(--muted);background:var(--bg);color:var(--muted);text-decoration:line-through;cursor:default}
 .slot[disabled] small{display:block;text-decoration:none;font-size:11px;font-weight:400}
 label{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:15px}
 input{font:inherit;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--ink)}
@@ -60,10 +73,10 @@ input:focus-visible{outline:3px solid var(--accent-ink);outline-offset:1px}
 .btn{border:0;border-radius:14px;padding:14px;background:var(--accent);color:var(--accent-text);font-weight:800;width:100%}
 .btn.small{padding:10px;font-size:15px}
 .btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--accent-ink)}
-.btn.ok{background:#bfe8cc;color:var(--ok-ink)} .btn.no{background:#fbd3de;color:var(--no-ink)}
+.btn.ok{background:var(--ok-btn);color:var(--ok-ink)} .btn.no{background:var(--no-btn);color:var(--no-ink)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700;white-space:nowrap}
-.badge.wait{background:var(--warn-bg);color:var(--warn-ink)}.badge.ok{background:var(--ok-bg);color:var(--ok-ink)}.badge.no{background:var(--no-bg);color:var(--no-ink)}.badge.pay{background:#e3effc;color:var(--accent-ink)}
+.badge.wait{background:var(--warn-bg);color:var(--warn-ink)}.badge.ok{background:var(--ok-bg);color:var(--ok-ink)}.badge.no{background:var(--no-bg);color:var(--no-ink)}.badge.pay{background:var(--info);color:var(--accent-ink)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-weight:700;color:var(--muted)}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
@@ -87,7 +100,7 @@ h2.pg{margin:0;font-size:20px}
 .acal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
 .acal .h{font-size:12px;color:var(--muted)}
 .acal button,.acal i{min-height:48px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:15px;position:relative;line-height:1.2}
-.acal button.has{background:#e3effc}
+.acal button.has{background:var(--info)}
 .acal button.sel{outline:3px solid var(--accent-ink)}
 .acal button.today{border:2px solid var(--sun)}
 .acal small{font-size:11px;font-weight:400;color:var(--muted)}
@@ -104,7 +117,7 @@ h2.pg{margin:0;font-size:20px}
 .big2{font-size:30px;font-weight:800;color:var(--accent-ink);line-height:1.2}
 .bars{display:flex;align-items:flex-end;gap:4px;height:90px;margin-top:8px}
 .bars div{flex:1;background:var(--accent);border-radius:5px 5px 0 0;min-height:3px}
-.bars div.z{background:#dfe9f6}
+.bars div.z{background:var(--line)}
 .axis{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:4px}
 .mrow{display:flex;justify-content:space-between;padding:6px 0}
 @media (prefers-reduced-motion:no-preference){.body>*{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}}}
@@ -129,6 +142,15 @@ h2.pg{margin:0;font-size:20px}
   var PARTS=['肩頸','背部','腰部','腿部','腳底'];
   var WD=['日','一','二','三','四','五','六'];
   var S;
+  var THEMES={"blue":{"name":"馬卡龍藍","desc":"明亮清爽，預設風格","dark":false,"vars":{"mbg":"#eef5fd","mink":"#2b3a4f","m-sky":"#a9d3fb","m-cream":"#ffe9a8","m-pink":"#ffc9c4","m-mint":"#b5ead3","m-mist":"#d5e3f3"}},"sakura":{"name":"櫻花粉","desc":"溫柔粉嫩，適合美甲、美睫、美容","dark":false,"vars":{"bg":"#fdf0f3","bg2":"#fff9fa","card":"#ffffff","ink":"#4a2f3a","muted":"#86616e","line":"#f3d9e0","accent":"#f7b2c4","accent-text":"#4a1a2c","accent-ink":"#b0386b","info":"#fde6ec","mbg":"#fdf0f3","mink":"#4a2f3a","m-sky":"#f9bfd0","m-cream":"#ffe9b8","m-pink":"#fcd0c8","m-mint":"#cdeedd","m-mist":"#ecd5df"}},"mint":{"name":"薄荷綠","desc":"清新自然，適合按摩、SPA、療癒類","dark":false,"vars":{"bg":"#edf8f3","bg2":"#f8fdfb","card":"#ffffff","ink":"#26423a","muted":"#587468","line":"#d3eadf","accent":"#9fdcc0","accent-text":"#0d3a29","accent-ink":"#1f7a58","info":"#e0f4ea","mbg":"#edf8f3","mink":"#26423a","m-sky":"#a9e0c8","m-cream":"#ffefb8","m-pink":"#ffd1cb","m-mint":"#c5ecd8","m-mist":"#d3e8df"}},"apricot":{"name":"奶茶暖杏","desc":"暖暖的奶茶色，溫馨有質感","dark":false,"vars":{"bg":"#fbf3ea","bg2":"#fffaf4","card":"#ffffff","ink":"#4a3828","muted":"#86705c","line":"#efdfcb","accent":"#f2c08f","accent-text":"#4a2a0c","accent-ink":"#a15a1c","info":"#faead6","mbg":"#fbf3ea","mink":"#4a3828","m-sky":"#f6cfa4","m-cream":"#ffe7a3","m-pink":"#f8c6b8","m-mint":"#cde6c8","m-mist":"#ecdcc8"}},"lavender":{"name":"薰衣草紫","desc":"優雅柔和，適合美容、諮詢","dark":false,"vars":{"bg":"#f4f0fb","bg2":"#fbf9ff","card":"#ffffff","ink":"#382f50","muted":"#6f6590","line":"#e2d9f3","accent":"#c9b8f2","accent-text":"#2c1d5a","accent-ink":"#6a46b8","info":"#ece5fa","mbg":"#f4f0fb","mink":"#382f50","m-sky":"#d2c4f5","m-cream":"#ffe9b0","m-pink":"#f9c9dd","m-mint":"#c3ead9","m-mist":"#e2dbf1"}},"midnight":{"name":"夜藍（深色冷風格）","desc":"深藍底，冷靜俐落","dark":true,"vars":{"bg":"#0f1724","bg2":"#131d2e","card":"#1a2538","ink":"#e6edf7","muted":"#93a4bd","line":"#2b3a52","accent":"#5aa9f0","accent-text":"#04172b","accent-ink":"#8fc6ff","info":"#1c2d47","warn-bg":"#3d3418","warn-ink":"#ffe29a","mbg":"#0f1724","mink":"#eef4ff","m-sky":"#2b5f9a","m-cream":"#3b4f95","m-pink":"#1f6f78","m-mint":"#2f6a8f","m-mist":"#3a5068","ok-bg":"#1f3d2d","ok-ink":"#bff0d2","ok-btn":"#2c5a40","no-bg":"#40212a","no-ink":"#ffd3dc","no-btn":"#6a2c3a"}},"iron":{"name":"灰鐵","desc":"石墨灰，沉穩中性","dark":true,"vars":{"bg":"#1e2023","bg2":"#25282c","card":"#2d3136","ink":"#e8eaed","muted":"#a0a6ae","line":"#41464d","accent":"#9aa7b5","accent-text":"#14181c","accent-ink":"#c3ccd6","info":"#363c43","warn-bg":"#3e3a26","warn-ink":"#ffe29a","mbg":"#1b1d20","mink":"#f1f3f5","m-sky":"#4a5560","m-cream":"#596470","m-pink":"#3d464f","m-mint":"#5c6773","m-mist":"#525c66","ok-bg":"#1f3d2d","ok-ink":"#bff0d2","ok-btn":"#2c5a40","no-bg":"#40212a","no-ink":"#ffd3dc","no-btn":"#6a2c3a"}},"gentleman":{"name":"紳士","desc":"深咖啡配金色，成熟穩重","dark":true,"vars":{"bg":"#1c1814","bg2":"#231e19","card":"#2b251f","ink":"#efe6d8","muted":"#b0a18b","line":"#473d31","accent":"#c9a45c","accent-text":"#1d1507","accent-ink":"#e3c27e","info":"#382f24","warn-bg":"#43371c","warn-ink":"#ffe0a0","mbg":"#17130f","mink":"#f6ecd9","m-sky":"#7a5a1f","m-cream":"#7a2e3a","m-pink":"#2f5545","m-mint":"#5c4631","m-mist":"#6b5a45","ok-bg":"#1f3d2d","ok-ink":"#bff0d2","ok-btn":"#2c5a40","no-bg":"#40212a","no-ink":"#ffd3dc","no-btn":"#6a2c3a"}}};
+  var themeKeys=[];
+  function applyTheme(id){
+    var r=document.documentElement,t=THEMES[id]||THEMES.blue;
+    themeKeys.forEach(function(k){r.style.removeProperty('--'+k)});themeKeys=Object.keys(t.vars);
+    themeKeys.forEach(function(k){r.style.setProperty('--'+k,t.vars[k])});
+    r.style.colorScheme=t.dark?'dark':'light';
+    if(S)S.theme=id;
+  }
 
   function addD(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
   function pad(n){return n<10?'0'+n:''+n}
@@ -141,7 +163,7 @@ h2.pg{margin:0;font-size:20px}
 
   function fresh(){
     var t=S0();
-    S={role:'c',today:t,mine:null,
+    S={theme:'blue',role:'c',today:t,mine:null,
        c:{step:'chat',svc:null,date:null,month:new Date(t.getFullYear(),t.getMonth(),1),slot:null,name:'林先生',phone:'0912-345-678',parts:['肩頸'],msgs:[]},
        o:{msgs:[]},
        a:{page:'ov',sub:null,bk:'wait',month:new Date(t.getFullYear(),t.getMonth(),1),day:null},
@@ -151,6 +173,7 @@ h2.pg{margin:0;font-size:20px}
            mk('蔡小姐',1,1,'11:00','ok'),mk('趙先生',3,2,'16:00','wait'),mk('孫小姐',2,4,'13:00','wait')]};
     S.c.msgs.push({t:'bot',x:'歡迎光臨'+SHOP+'！點下面的「預約」就能選時間。'});
     S.o.msgs.push({t:'bot',x:'你好，這裡是你的老闆選單。有新預約我會在這裡通知你。'});
+    applyTheme('blue');
   }
   function openDay(d){return d.getDay()!==0&&d>S.today} // 不接受當天預約
   function isBooked(d,h,m){var k=(d.getDate()*7+h*3+(m?5:0))%9;return k===0||k===4}
@@ -244,7 +267,7 @@ h2.pg{margin:0;font-size:20px}
       var up=all.filter(function(x){return x.status==='ok'&&x.date>S.today});
       b='<h2 class="pg">總覽</h2>'+
         (wait.length?'<button class="warnbar" data-ap="bk">'+wait.length+' 筆新預約等你處理<span>前往 ›</span></button>':'<div class="hint">目前沒有新預約</div>')+
-        (unpaid().length?'<button class="warnbar" data-ap="acc" style="background:#e3effc;color:var(--accent-ink)">'+unpaid().length+' 筆還沒收錢的預約<span>前往 ›</span></button>':'')+
+        (unpaid().length?'<button class="warnbar" data-ap="acc" style="background:var(--info);color:var(--accent-ink)">'+unpaid().length+' 筆還沒收錢的預約<span>前往 ›</span></button>':'')+
         '<div class="grp">接下來的預約</div>'+(up.slice(0,4).map(function(x){return bkCard(x)}).join('')||'<div class="card sm">還沒有已確認的預約</div>');
     }else if(A.page==='bk'){
       var pills='<div class="pills">'+[['wait','新預約'],['cal','行事曆'],['all','全部']].map(function(p){return '<button class="pill" data-ab="'+p[0]+'" aria-pressed="'+(A.bk===p[0])+'">'+p[1]+'</button>'}).join('')+'</div>';
@@ -291,9 +314,11 @@ h2.pg{margin:0;font-size:20px}
     if(A.sub==='svc')return '<button class="back pill" data-sub="" style="align-self:flex-start">‹ 設定</button><h2 class="pg">服務項目</h2>'+SERVICES.map(function(x){return '<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><b>'+x.name+'</b><div class="sm">'+x.min+' 分鐘・'+money(x.price)+'</div></div><span class="badge pay">編輯</span></div>'}).join('')+'<div class="sm center">價格、時長都能自己改，不要的項目可以停用。</div>';
     if(A.sub==='hrs'){var days=['週一','週二','週三','週四','週五','週六','週日'];
       return '<button class="back pill" data-sub="" style="align-self:flex-start">‹ 設定</button><h2 class="pg">營業時間</h2><div class="card">'+days.map(function(d,i){return '<div class="hrow"><b>'+d+'</b><span>'+(i<6?'10:00 ～ 21:00':'<span class="sm">休息</span>')+'</span></div>'}).join('')+'</div><div class="sm center">臨時休息、連休幾天，也在這裡一次設定。</div>'}
+    if(A.sub==='theme')return '<button class="back pill" data-sub="" style="align-self:flex-start">‹ 設定</button><h2 class="pg">外觀風格</h2><div class="hint">點一個風格試試看：這個試玩頁、客人預約頁、LINE 的客人選單與老闆選單會一起換色。</div><div class="tgrid">'+Object.keys(THEMES).map(function(k){var t=THEMES[k],v=t.vars,sw=[v.bg||'#eef5fd',v.card||'#ffffff',v.accent||'#8cc4fb',v.ink||'#2b3a4f'];return '<button class="swatch" data-th="'+k+'" aria-pressed="'+(S.theme===k)+'"><i style="background:'+sw[0]+'">'+sw.slice(1).map(function(c){return '<b style="background:'+c+'"></b>'}).join('')+'</i><b>'+(S.theme===k?'✓ ':'')+t.name+'</b><small>'+t.desc+'</small></button>'}).join('')+'</div><div class="sm center">共 8 種：5 種明亮、3 種深色。換了之後，LINE 選單會自動重畫。</div>';
     function row(t,s,sub){return '<button class="sr"'+(sub?' data-sub="'+sub+'"':'')+'><div><b>'+t+'</b><span class="s">'+s+'</span></div>'+(sub?'<span style="color:var(--accent-ink)">›</span>':'')+'</button>'}
     return '<h2 class="pg">設定</h2>'+
       '<div class="grp">店家與預約</div><div class="card" style="padding-block:4px">'+row('店家資訊與預約規則','店名、電話、幾天前可預約、能不能預約當天')+row('服務項目','名稱、時長、價格','svc')+row('營業時間與休息日','每週時間、臨時休息、連休','hrs')+row('客人要填的資料','預約時要問客人什麼')+row('分店','有第二間店時再用，各店時間與休息日分開')+'</div>'+
+      '<div class="grp">外觀</div><div class="card" style="padding-block:4px">'+row('外觀風格','8 種風格（含 3 種深色），網頁與 LINE 選單一起換','theme')+'</div>'+
       '<div class="grp">LINE</div><div class="card" style="padding-block:4px">'+row('訊息額度','本月用了多少則，快用完會提醒你')+row('通知與文字','新預約、提醒的訊息內容可以自己改')+'</div>'+
       '<div class="grp">資料與安全</div><div class="card" style="padding-block:4px">'+row('備份','每天自動備份，可下載存到自己電腦')+row('搬家','要換主機時，一鍵打包帶走全部資料')+'</div>';
   }
@@ -318,6 +343,7 @@ h2.pg{margin:0;font-size:20px}
       var A=S.a;
       if(t.dataset.ap){A.page=t.dataset.ap;A.sub=null}
       else if(t.dataset.sub!==undefined){A.sub=t.dataset.sub||null}
+      else if(t.dataset.th){applyTheme(t.dataset.th)}
       else if(t.dataset.ab){A.bk=t.dataset.ab}
       else if(t.dataset.adec){decide(S.bk[+t.dataset.i],t.dataset.adec==='ok')}
       else if(t.dataset.apay){setPaid(S.bk[+t.dataset.i],t.dataset.apay)}
